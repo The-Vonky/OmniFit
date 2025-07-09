@@ -1,6 +1,6 @@
 import { registerRootComponent } from 'expo';
 
-import App from '../../App';
+import App from './App';
 
 export interface User {
   id: string;
