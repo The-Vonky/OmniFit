@@ -33,8 +33,6 @@ interface FutureItem {
   text: string;
 }
 
-const { width } = Dimensions.get('window');
-
 const FitApp: React.FC = () => {
   const workoutStats: StatItem[] = [
     { emoji: '💪', label: 'Força' },
@@ -86,7 +84,7 @@ const FitApp: React.FC = () => {
       <View style={styles.header}>
         <View>
           <Text style={styles.greeting}>Bem-vindo de volta!</Text>
-          <Text style={styles.userName}>João Atleta</Text>
+          <Text style={styles.userName}>Deywid Braga</Text>
         </View>
         <TouchableOpacity style={styles.profileButton} onPress={handleProfilePress}>
           <Text style={styles.profileIcon}>👤</Text>
@@ -102,7 +100,7 @@ const FitApp: React.FC = () => {
           end={{ x: 1, y: 1 }}
         >
           <View style={styles.cardHeader}>
-            <Text style={styles.cardTitle}>TREINO DO DIA</Text>
+            <Text style={styles.cardTitle}>TREINO DO DIA: Segunda-Feira</Text>
             <Text style={styles.workoutEmoji}>💪</Text>
           </View>
           
@@ -509,4 +507,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LoginScreen;
+export default FitApp;
