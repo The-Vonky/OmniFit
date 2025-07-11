@@ -33,7 +33,7 @@ interface FutureItem {
   text: string;
 }
 
-const FitApp: React.FC = () => {
+const LoginScreen: React.FC = () => {
   const workoutStats: StatItem[] = [
     { emoji: '💪', label: 'Força' },
     { emoji: '🔥', label: 'Intenso' },
@@ -507,4 +507,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default FitApp;
+export default LoginScreen;
