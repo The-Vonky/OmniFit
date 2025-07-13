@@ -196,7 +196,7 @@ const LoginScreen: React.FC = () => {
         
         <TouchableOpacity
           style={styles.navItem}
-          onPress={() => handleNavPress('workout')}
+          onPress={() => handleNavPress('Welcome')}
         >
           <Text style={styles.navIcon}>💪</Text>
           <Text style={styles.navText}>Treinos</Text>
@@ -204,7 +204,7 @@ const LoginScreen: React.FC = () => {
         
         <TouchableOpacity
           style={styles.navItem}
-          onPress={() => handleNavPress('progress')}
+          onPress={() => handleNavPress('Exercise')}
         >
           <Text style={styles.navIcon}>📊</Text>
           <Text style={styles.navText}>Progresso</Text>
