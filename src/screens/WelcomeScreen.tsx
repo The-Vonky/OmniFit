@@ -1,53 +1,111 @@
 import React from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, ImageBackground } from 'react-native';
+
+import type { StackNavigationProp } from '@react-navigation/stack';
+
+type RootStackParamList = {
+  Welcome: undefined;
+  Profile: undefined;
+};
+
+type WelcomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Welcome'>;
 
 interface WelcomeScreenProps {
-  onGetStarted?: () => void;
+  navigation: WelcomeScreenNavigationProp;
 }
 
-const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onGetStarted }) => {
+const WelcomeScreen = ({ navigation }: WelcomeScreenProps) => {
   const handleGetStarted = () => {
-    if (onGetStarted) {
-      onGetStarted();
-    }
+    // Navegar para a próxima tela (exemplo: Profile)
+    navigation.navigate('Profile');
   };
 
   return (
-    <div 
-      className="relative flex size-full min-h-screen flex-col bg-slate-50 justify-between group/design-root overflow-x-hidden"
-      style={{ fontFamily: '"Be Vietnam Pro", "Noto Sans", sans-serif' }}
-    >
-      <div>
-        <div className="@container">
-          <div className="@[480px]:px-4 @[480px]:py-3">
-            <div
-              className="w-full bg-center bg-no-repeat bg-cover flex flex-col justify-end overflow-hidden bg-slate-50 @[480px]:rounded-xl min-h-80"
-              style={{
-                backgroundImage: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuC4vGglYNR5tzsgpVmCMyWyTfFHf28K6cavKfBUbFsNcg69M-loYUfI4NTXiIz-38VWbblsgBP-KJ2MD8lU4FvL2izGdFq4smM6uKecRpla22PSZJgKF1_5CWhZGm6H3lOBlxmInzfwYCcLdvp_nApJ-P7e1u8ScOwSi2lxpAUlmkdMPbPGlyI5ch52fCjh2BpLk3cd0-sK6ShPOwIIXrLAtd6lH8zq68mYzIAY1RxYDAiNf1tFiIj9Masc911sTYNcKrg-D7WHHRz_")'
-              }}
-            />
-          </div>
-        </div>
-        <h1 className="text-[#0e141b] tracking-light text-[32px] font-bold leading-tight px-4 text-center pb-3 pt-6">
+    <View style={styles.container}>
+      <View style={styles.content}>
+        {/* Imagem de fundo */}
+        <ImageBackground
+          source={{
+            uri: 'https://lh3.googleusercontent.com/aida-public/AB6AXuC4vGglYNR5tzsgpVmCMyWyTfFHf28K6cavKfBUbFsNcg69M-loYUfI4NTXiIz-38VWbblsgBP-KJ2MD8lU4FvL2izGdFq4smM6uKecRpla22PSZJgKF1_5CWhZGm6H3lOBlxmInzfwYCcLdvp_nApJ-P7e1u8ScOwSi2lxpAUlmkdMPbPGlyI5ch52fCjh2BpLk3cd0-sK6ShPOwIIXrLAtd6lH8zq68mYzIAY1RxYDAiNf1tFiIj9Masc911sTYNcKrg-D7WHHRz_'
+          }}
+          style={styles.backgroundImage}
+        />
+        
+        {/* Título */}
+        <Text style={styles.title}>
           Bem-vindo ao seu novo estilo de vida
-        </h1>
-        <p className="text-[#0e141b] text-base font-normal leading-normal pb-3 pt-1 px-4 text-center">
+        </Text>
+        
+        {/* Descrição */}
+        <Text style={styles.description}>
           Descubra um mundo de fitness personalizado, aulas envolventes e resultados incríveis. 
           Vamos começar sua jornada de transformação hoje mesmo!
-        </p>
-      </div>
-      <div>
-        <div className="flex px-4 py-3">
-          <button
-            className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-12 px-5 flex-1 bg-[#1978e5] text-slate-50 text-base font-bold leading-normal tracking-[0.015em]"
-            onClick={handleGetStarted}
-          >
-            <span className="truncate">Começar</span>
-          </button>
-        </div>
-        <div className="h-5 bg-slate-50" />
-      </div>
-    </div>
+        </Text>
+      </View>
+      
+      {/* Botão */}
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={handleGetStarted}
+        >
+          <Text style={styles.buttonText}>Começar</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#f8fafc',
+    justifyContent: 'space-between',
+  },
+  content: {
+    flex: 1,
+    paddingHorizontal: 16,
+  },
+  backgroundImage: {
+    width: '100%',
+    height: 320,
+    borderRadius: 12,
+    overflow: 'hidden',
+    marginBottom: 24,
+    marginTop: 12,
+  },
+  title: {
+    fontSize: 32,
+    fontWeight: 'bold',
+    color: '#0e141b',
+    textAlign: 'center',
+    marginBottom: 12,
+    lineHeight: 38,
+  },
+  description: {
+    fontSize: 16,
+    color: '#0e141b',
+    textAlign: 'center',
+    lineHeight: 24,
+    paddingHorizontal: 8,
+  },
+  buttonContainer: {
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    paddingBottom: 32,
+  },
+  button: {
+    backgroundColor: '#1978e5',
+    borderRadius: 12,
+    height: 48,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: '#f8fafc',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+});
 
 export default WelcomeScreen;
