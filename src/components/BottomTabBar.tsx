@@ -1,21 +1,12 @@
-// Versão corrigida do CustomBottomTabBar.tsx
-
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import {
-  View,
-  Text,
   TouchableOpacity,
   StyleSheet,
   Animated,
-  Dimensions,
   Platform,
-  Vibration,
 } from 'react-native';
-import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
-const { width } = Dimensions.get('window');
 
 const getTabIcon = ({ routeName, focused, color, size }) => {
   const icons = {
@@ -40,23 +31,20 @@ const getTabLabel = (name) => {
   return labels[name] || name.toUpperCase();
 };
 
-const AnimatedTab = ({ route, index, focused, onPress, onLongPress }) => {
+const AnimatedTab = ({ route, focused, onPress, onLongPress }) => {
   const scale = useRef(new Animated.Value(1)).current;
   const opacity = useRef(new Animated.Value(focused ? 1 : 0)).current;
-  const glow = useRef(new Animated.Value(focused ? 1 : 0)).current;
 
   useEffect(() => {
     if (focused) {
       Animated.parallel([
         Animated.spring(scale, { toValue: 1.15, useNativeDriver: true }),
         Animated.timing(opacity, { toValue: 1, duration: 300, useNativeDriver: true }),
-        Animated.timing(glow, { toValue: 1, duration: 400, useNativeDriver: true }),
       ]).start();
     } else {
       Animated.parallel([
         Animated.spring(scale, { toValue: 1, useNativeDriver: true }),
         Animated.timing(opacity, { toValue: 0, duration: 200, useNativeDriver: true }),
-        Animated.timing(glow, { toValue: 0, duration: 300, useNativeDriver: true }),
       ]).start();
     }
   }, [focused]);
@@ -70,7 +58,6 @@ const AnimatedTab = ({ route, index, focused, onPress, onLongPress }) => {
           justifyContent: 'center',
         }}
       >
-        <Animated.View style={[styles.glow, { opacity: glow }]} />
         {getTabIcon({ routeName: route.name, focused, color: '#00FFF7', size: 26 })}
         <Animated.Text style={[styles.label, { opacity }]}>
           {getTabLabel(route.name)}
@@ -80,7 +67,7 @@ const AnimatedTab = ({ route, index, focused, onPress, onLongPress }) => {
   );
 };
 
-const CustomBottomTabBar = ({ state, descriptors, navigation }) => {
+const BottomTabBar = ({ state, descriptors, navigation }) => {
   const insets = useSafeAreaInsets();
   const translateY = useRef(new Animated.Value(50)).current;
   const opacity = useRef(new Animated.Value(0)).current;
@@ -114,7 +101,6 @@ const CustomBottomTabBar = ({ state, descriptors, navigation }) => {
           <AnimatedTab
             key={route.key}
             route={route}
-            index={index}
             focused={isFocused}
             onPress={onPress}
             onLongPress={onLongPress}
@@ -149,4 +135,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CustomBottomTabBar;
+export default BottomTabBar;
