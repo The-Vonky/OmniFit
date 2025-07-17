@@ -39,6 +39,13 @@ const ProfileScreen = () => {
           fat={{ current: 60, goal: 80 }}
         />
 
+        <ProgressOverviewCard
+          weight={75}
+          bodyFat={15}
+          muscleMass={65}
+          progressImage="https://example.com/progress.jpg"
+        />
+
         <WaterTrackerCard
           cupsDrank={6}
           dailyGoal={8}
