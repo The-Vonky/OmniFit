@@ -10,6 +10,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import BottomTabBar from './src/components/BottomTabBar';
 import HomeScreen from './src/screens/HomeScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
+import teste2 from './src/screens/teste2';
 
 const Tab = createBottomTabNavigator();
 
@@ -57,8 +58,8 @@ export default function App() {
           screenOptions={{ headerShown: false }}
         >
           <Tab.Screen name="home" component={HomeScreen} />
-          <Tab.Screen name="workout" component={() => <PlaceholderScreen label="Treino Screen" />} />
-          <Tab.Screen name="diet" component={() => <PlaceholderScreen label="Dieta Screen" />} />
+          <Tab.Screen name="workout" component={() => <PlaceholderScreen label="Progresso Screen" />} />
+          <Tab.Screen name="diet" component={teste2} />
           <Tab.Screen name="progress" component={() => <PlaceholderScreen label="Progresso Screen" />} />
           <Tab.Screen name="profile" component={ProfileScreen} />
         </Tab.Navigator>
