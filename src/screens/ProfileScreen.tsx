@@ -1,12 +1,12 @@
 import React from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
-import HomeHeader from '../components/HomeHeader';
-import DaySummaryCard from '../components/DaySummaryCard';
-import ProgressOverviewCard from '../components/ProgressOverviewCard';
-import DailyMacrosCard from '../components/DailyMacrosCard';
-import WaterTrackerCard from '../components/WaterTrackerCard';
-import QuickWorkoutCard from '../components/QuickWorkoutCard';
-import WorkoutHistoryList from '../components/WorkoutHistoryList';
+import HomeHeader from '../components/TEC/HomeHeader';
+import DaySummaryCard from '../components/TEC/DaySummaryCard';
+import ProgressOverviewCard from '../components/TEC/ProgressOverviewCard';
+import DailyMacrosCard from '../components/TEC/DailyMacrosCard';
+import WaterTrackerCard from '../components/TEC/WaterTrackerCard';
+import QuickWorkoutCard from '../components/TEC/QuickWorkoutCard';
+import WorkoutHistoryList from '../components/TEC/WorkoutHistoryList';
 
 const historyData = [
   { id: '1', date: '2025-07-15', workoutType: 'Treino de Pernas', status: 'Completo' },
