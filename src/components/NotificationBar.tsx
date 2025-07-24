@@ -22,3 +22,5 @@ export const NotificationBar: React.FC<NotificationBarProps> = ({ message, onPre
     </GlowingCard>
   );
 };
+
+export default NotificationBar;

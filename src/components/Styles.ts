@@ -376,3 +376,5 @@ export const styles = {
     textAlign: 'center' as const,
   },
 };
+
+export default styles;

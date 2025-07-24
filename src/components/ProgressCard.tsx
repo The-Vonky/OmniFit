@@ -31,3 +31,5 @@ export const ProgressCard: React.FC<ProgressCardProps> = ({ stats, percentage })
     </GlowingCard>
   );
 };
+
+export default ProgressCard;

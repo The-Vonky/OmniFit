@@ -17,3 +17,5 @@ export const MotivationCard: React.FC<MotivationCardProps> = ({ message }) => {
     </GlowingCard>
   );
 };
+
+export default MotivationCard;

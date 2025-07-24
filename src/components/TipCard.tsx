@@ -17,3 +17,5 @@ export const TipCard: React.FC<TipCardProps> = ({ tip }) => {
     </GlowingCard>
   );
 };
+
+export default TipCard;

@@ -29,3 +29,5 @@ export const CreatineReminder: React.FC<CreatineReminderProps> = ({
     </GlowingCard>
   );
 };
+
+export default CreatineReminder;
