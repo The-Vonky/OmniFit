@@ -48,3 +48,5 @@ export const WorkoutCard: React.FC<WorkoutCardProps> = ({
     </GlowingCard>
   );
 };
+
+export default WorkoutCard;

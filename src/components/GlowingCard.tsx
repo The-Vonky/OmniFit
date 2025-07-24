@@ -77,3 +77,5 @@ export const GlowingCard: React.FC<GlowingCardProps> = ({
     </Animated.View>
   );
 };
+
+export default GlowingCard;

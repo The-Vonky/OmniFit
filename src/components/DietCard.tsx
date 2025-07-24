@@ -30,3 +30,5 @@ export const DietCard: React.FC<DietCardProps> = ({ calories, macros }) => {
     </GlowingCard>
   );
 };
+
+export default DietCard;

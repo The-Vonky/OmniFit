@@ -34,3 +34,5 @@ export const Header: React.FC<HeaderProps> = ({ userName, fadeAnim, slideAnim })
     </Animated.View>
   );
 };
+
+export default Header;

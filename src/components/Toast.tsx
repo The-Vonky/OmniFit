@@ -18,3 +18,5 @@ export const Toast: React.FC<ToastProps> = ({ message, show }) => {
     </Animated.View>
   );
 };
+
+export default Toast;
