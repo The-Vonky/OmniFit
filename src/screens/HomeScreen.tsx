@@ -1,5 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, ScrollView, Animated, Dimensions, StatusBar, Platform } from 'react-native';
+import { 
+  View, 
+  ScrollView, 
+  Animated, 
+  Dimensions, 
+  StatusBar, 
+  Platform 
+} from 'react-native';
 import { styles } from '../components/Styles';
 
 // Importar todos os componentes
@@ -18,54 +25,50 @@ import WorkoutCard from '../components/WorkoutCard';
 
 const { width, height } = Dimensions.get('window');
 
-export default function Home() {
-  const [creatineChecked, setCreatineChecked] = useState(false);
-  const [showNotification, setShowNotification] = useState(true);
-  const [toastMessage, setToastMessage] = useState('');
-  const [showToast, setShowToast] = useState(false);
+export default function Home(): JSX.Element {
+  const [creatineChecked, setCreatineChecked] = useState<boolean>(false);
+  const [showNotification, setShowNotification] = useState<boolean>(true);
+  const [toastMessage, setToastMessage] = useState<string>('');
+  const [showToast, setShowToast] = useState<boolean>(false);
 
-  const fadeAnim = useRef(new Animated.Value(0)).current;
-  const slideAnim = useRef(new Animated.Value(50)).current;
+  const fadeAnim = useRef<Animated.Value>(new Animated.Value(0)).current;
+  const slideAnim = useRef<Animated.Value>(new Animated.Value(50)).current;
 
   useEffect(() => {
-    // Verificar se as animações estão definidas antes de usar
-    if (fadeAnim && slideAnim) {
-      Animated.parallel([
-        Animated.timing(fadeAnim, {
-          toValue: 1,
-          duration: 1000,
-          useNativeDriver: true,
-        }),
-        Animated.timing(slideAnim, {
-          toValue: 0,
-          duration: 800,
-          useNativeDriver: true,
-        }),
-      ]).start();
-    }
+    // As animações sempre existem após a inicialização, então podemos remover a verificação
+    Animated.parallel([
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 1000,
+        useNativeDriver: true,
+      }),
+      Animated.timing(slideAnim, {
+        toValue: 0,
+        duration: 800,
+        useNativeDriver: true,
+      }),
+    ]).start();
 
-    // Welcome message com verificação
+    // Welcome message
     const welcomeTimer = setTimeout(() => {
-      if (typeof displayToast === 'function') {
-        displayToast('🎯 Bem-vindo de volta! Vamos conquistar seus objetivos hoje!');
-      }
+      displayToast('🎯 Bem-vindo de volta! Vamos conquistar seus objetivos hoje!');
     }, 1500);
 
     return () => {
       clearTimeout(welcomeTimer);
     };
-  }, [fadeAnim, slideAnim]);
+  }, []); // Removendo fadeAnim e slideAnim das dependências
 
-  const displayToast = (message) => {
-    // Verificar se a mensagem é válida
-    if (message && typeof message === 'string' && message.length > 0) {
+  const displayToast = (message: string): void => {
+    // Verificação mais robusta da mensagem
+    if (message && typeof message === 'string' && message.trim().length > 0) {
       setToastMessage(message);
       setShowToast(true);
       setTimeout(() => setShowToast(false), 3000);
     }
   };
 
-  const toggleCreatine = () => {
+  const toggleCreatine = (): void => {
     const newValue = !creatineChecked;
     setCreatineChecked(newValue);
     
@@ -76,15 +79,15 @@ export default function Home() {
     displayToast(message);
   };
 
-  const startWorkout = () => {
+  const startWorkout = (): void => {
     displayToast('🔥 Iniciando treino de Peito + Tríceps!');
   };
 
-  const openAssistant = () => {
+  const openAssistant = (): void => {
     displayToast('🤖 Assistente ativado! Como posso ajudar?');
   };
 
-  const handleNotification = () => {
+  const handleNotification = (): void => {
     setShowNotification(false);
     displayToast('📊 Redirecionando para avaliação física...');
   };
@@ -98,7 +101,7 @@ export default function Home() {
         backgroundColor="transparent"
       />
       
-      {/* Toast - verificar se existe antes de renderizar */}
+      {/* Toast - renderização condicional mais limpa */}
       {showToast && toastMessage && (
         <Toast 
           message={toastMessage} 

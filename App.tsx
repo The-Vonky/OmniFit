@@ -1,4 +1,3 @@
-// App.tsx - SÓ navegação e configuração global
 import React, { useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
