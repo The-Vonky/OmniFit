@@ -35,7 +35,6 @@ export default function Home(): JSX.Element {
   const slideAnim = useRef<Animated.Value>(new Animated.Value(50)).current;
 
   useEffect(() => {
-    // As animações sempre existem após a inicialização, então podemos remover a verificação
     Animated.parallel([
       Animated.timing(fadeAnim, {
         toValue: 1,
@@ -57,12 +56,12 @@ export default function Home(): JSX.Element {
     return () => {
       clearTimeout(welcomeTimer);
     };
-  }, []); // Removendo fadeAnim e slideAnim das dependências
+  }, []);
 
   const displayToast = (message: string): void => {
-    // Verificação mais robusta da mensagem
+    // Validação mais robusta para evitar o erro charAt
     if (message && typeof message === 'string' && message.trim().length > 0) {
-      setToastMessage(message);
+      setToastMessage(message.trim());
       setShowToast(true);
       setTimeout(() => setShowToast(false), 3000);
     }
@@ -94,15 +93,24 @@ export default function Home(): JSX.Element {
 
   return (
     <View style={styles.container}>
-      {/* StatusBar configurado corretamente */}
+      {/* StatusBar melhorado para evitar warnings */}
       <StatusBar 
         barStyle="light-content"
         translucent={true}
         backgroundColor="transparent"
+        hidden={false}
       />
       
-      {/* Toast - renderização condicional mais limpa */}
-      {showToast && toastMessage && (
+      {/* View para dar background à StatusBar se necessário */}
+      {Platform.OS === 'android' && (
+        <View style={{
+          height: StatusBar.currentHeight,
+          backgroundColor: 'transparent',
+        }} />
+      )}
+      
+      {/* Toast com validação aprimorada */}
+      {showToast && toastMessage && toastMessage.length > 0 && (
         <Toast 
           message={toastMessage} 
           visible={showToast} 

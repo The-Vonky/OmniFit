@@ -19,6 +19,10 @@ const PlaceholderScreen = ({ label }: { label: string }) => (
   </View>
 );
 
+// Componentes separados para evitar funções inline
+const WorkoutScreen = () => <PlaceholderScreen label="Workout Screen" />;
+const ProgressScreen = () => <PlaceholderScreen label="Progress Screen" />;
+
 export default function App() {
   const [fontLoaded, setFontLoaded] = useState(false);
 
@@ -57,9 +61,9 @@ export default function App() {
           screenOptions={{ headerShown: false }}
         >
           <Tab.Screen name="home" component={HomeScreen} />
-          <Tab.Screen name="workout" component={() => <PlaceholderScreen label="Progresso Screen" />} />
+          <Tab.Screen name="workout" component={WorkoutScreen} />
           <Tab.Screen name="diet" component={teste2} />
-          <Tab.Screen name="progress" component={() => <PlaceholderScreen label="Progresso Screen" />} />
+          <Tab.Screen name="progress" component={ProgressScreen} />
           <Tab.Screen name="profile" component={ProfileScreen} />
         </Tab.Navigator>
       </NavigationContainer>
