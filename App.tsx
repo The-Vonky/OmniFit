@@ -9,7 +9,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import BottomTabBar from './src/components/BottomTabBar';
 import HomeScreen from './src/screens/HomeScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
-import teste2 from './src/screens/teste2';
+import DietScreen from './src/screens/DietScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -62,7 +62,7 @@ export default function App() {
         >
           <Tab.Screen name="home" component={HomeScreen} />
           <Tab.Screen name="workout" component={WorkoutScreen} />
-          <Tab.Screen name="diet" component={teste2} />
+          <Tab.Screen name="diet" component={DietScreen} />
           <Tab.Screen name="progress" component={ProgressScreen} />
           <Tab.Screen name="profile" component={ProfileScreen} />
         </Tab.Navigator>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
-import HomeHeader from '../components/TEC/HomeHeader';
+import HomeHeader from '../components/HomeHeader';
 import DaySummaryCard from '../components/TEC/DaySummaryCard';
 import ProgressOverviewCard from '../components/TEC/ProgressOverviewCard';
 import DailyMacrosCard from '../components/TEC/DailyMacrosCard';
