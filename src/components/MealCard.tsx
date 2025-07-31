@@ -3,98 +3,69 @@ import { View, Text, StyleSheet } from 'react-native';
 
 interface MealCardProps {
   title: string;
-  icon: string;
-  time: string;
-  foods: { name: string; kcal: number }[];
+  calories: number;
+  protein: number;
+  carbs: number;
+  fat: number;
 }
 
-const MealCard: React.FC<MealCardProps> = ({ title, icon, time, foods }) => {
-  const totalKcal = foods.reduce((sum, food) => sum + food.kcal, 0);
-
+const MealCard: React.FC<MealCardProps> = ({
+  title,
+  calories,
+  protein,
+  carbs,
+  fat,
+}) => {
   return (
-    <View style={[styles.card, styles.glowGreen]}>
-      <View style={styles.topBorder} />
-      <View style={styles.header}>
-        <Text style={styles.title}>{icon} {title}</Text>
-        <Text style={styles.time}>{time}</Text>
+    <View style={styles.card}>
+      <Text style={styles.title}>{title}Café da Manhã</Text>
+      <Text style={styles.calories}>{calories}230 kcal</Text>
+      <View style={styles.macros}>
+        <Text style={styles.macro}>P: 10{protein}g</Text>
+        <Text style={styles.macro}>C: 200{carbs}g</Text>
+        <Text style={styles.macro}>F: 20{fat}g</Text>
       </View>
-
-      <View style={styles.foodList}>
-        {foods.map((food, index) => (
-          <View key={index} style={styles.foodItem}>
-            <Text style={styles.foodName}>{food.name}</Text>
-            <Text style={styles.foodKcal}>{food.kcal} kcal</Text>
-          </View>
-        ))}
-      </View>
-
-      <Text style={styles.totalKcal}>Total: {totalKcal} kcal</Text>
     </View>
   );
 };
+<MealCard
+  title="Almoço"
+  calories={620}
+  protein={35}
+  carbs={60}
+  fat={22}
+/>
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: '#18181B',
+    backgroundColor: '#1c1c2e',
     borderRadius: 16,
     padding: 16,
     marginBottom: 12,
-    borderWidth: 1,
-    borderColor: '#4ADE8030',
-    shadowColor: '#4ADE80',
-    shadowOffset: { width: 0, height: 0 },
+    shadowColor: '#0ff',
+    shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.2,
-    shadowRadius: 10,
-    elevation: 3,
-  },
-  glowGreen: {
-    borderColor: '#4ADE80',
-  },
-  topBorder: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    height: 2,
-    backgroundColor: '#4ADE80',
-    opacity: 0.6,
-    borderTopLeftRadius: 16,
-    borderTopRightRadius: 16,
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 8,
+    shadowRadius: 6,
+    elevation: 5,
   },
   title: {
-    color: '#86EFAC',
-    fontSize: 16,
+    fontSize: 18,
+    color: '#fff',
+    marginBottom: 4,
     fontWeight: 'bold',
   },
-  time: {
-    color: '#9CA3AF',
-    fontSize: 12,
-  },
-  foodList: {
+  calories: {
+    fontSize: 16,
+    color: '#0ff',
     marginBottom: 8,
   },
-  foodItem: {
+  macros: {
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
-  foodName: {
-    color: '#FFFFFF',
+  macro: {
+    color: '#ccc',
     fontSize: 14,
-  },
-  foodKcal: {
-    color: '#D1D5DB',
-    fontSize: 14,
-  },
-  totalKcal: {
-    textAlign: 'right',
-    color: '#A7F3D0',
-    fontSize: 12,
-    fontWeight: 'bold',
   },
 });
 
