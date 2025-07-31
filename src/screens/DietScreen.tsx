@@ -5,12 +5,14 @@ import HeaderCard from '../components/HeaderCard';
 import MacroProgressCard from '../components/MacroProgressCard';
 import HydrationCard from '../components/HydrationCard';
 import MealsCard from '../components/MealsCard';
+import MealCard from '../components/MealCard';
 import SupplementsCard from '../components/SupplementsCard';
 import TipCard from '../components/TipCard';
 import SummaryCard from '../components/SummaryCard';
 import Toast from '../components/Toast';
 import FloatingActionButton from '../components/FloatingButton';
 import HomeHeader from '../components/HomeHeader';
+import GoalCard from '../components/GoalCard';
 
 const DietScreen: React.FC = () => {
   const [waterIntake, setWaterIntake] = useState(6);
