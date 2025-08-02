@@ -1,230 +1,112 @@
-import React, { useEffect, useRef } from 'react';
-import {
-  TouchableOpacity,
-  StyleSheet,
-  Animated,
-  Platform,
-} from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import React from 'react';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
-const getTabIcon = ({ routeName, focused, color, size }) => {
-  // Validação para evitar undefined
-  const safeName = routeName || '';
-  
-  const icons = {
-    home: ['home-outline', 'home'],
-    workout: ['barbell-outline', 'barbell'],
-    diet: ['restaurant-outline', 'restaurant'],
-    progress: ['analytics-outline', 'analytics'],
-    profile: ['person-outline', 'person'],
-  };
-  
-  const [outline, filled] = icons[safeName] || ['ellipse-outline', 'ellipse'];
-  return <Ionicons name={focused ? filled : outline} size={size} color={color} />;
-};
+export type TabType = 'home' | 'diet' | 'goals' | 'progress' | 'profile';
 
-const getTabLabel = (name) => {
-  // Validação robusta para evitar charAt de undefined
-  if (!name || typeof name !== 'string') {
-    return 'TAB';
-  }
-  
-  const labels = {
-    home: 'HOME',
-    workout: 'TREINO',
-    diet: 'DIETA',
-    progress: 'PROGRESSO',
-    profile: 'PERFIL',
-  };
-  
-  return labels[name] || name.toUpperCase();
-};
+interface BottomTabBarProps {
+  activeTab: TabType;
+  onTabChange: (tab: TabType) => void;
+}
 
-const AnimatedTab = ({ route, focused, onPress, onLongPress }) => {
-  const scale = useRef(new Animated.Value(1)).current;
-  const opacity = useRef(new Animated.Value(focused ? 1 : 0)).current;
-
-  useEffect(() => {
-    if (focused) {
-      Animated.parallel([
-        Animated.spring(scale, { 
-          toValue: 1.15, 
-          useNativeDriver: true,
-          tension: 100,
-          friction: 8
-        }),
-        Animated.timing(opacity, { 
-          toValue: 1, 
-          duration: 300, 
-          useNativeDriver: true 
-        }),
-      ]).start();
-    } else {
-      Animated.parallel([
-        Animated.spring(scale, { 
-          toValue: 1, 
-          useNativeDriver: true,
-          tension: 100,
-          friction: 8
-        }),
-        Animated.timing(opacity, { 
-          toValue: 0, 
-          duration: 200, 
-          useNativeDriver: true 
-        }),
-      ]).start();
-    }
-  }, [focused, scale, opacity]);
-
-  // Validação adicional para route
-  if (!route || !route.name) {
-    return null;
-  }
+export function BottomTabBar({ activeTab, onTabChange }: BottomTabBarProps) {
+  const tabs = [
+    { id: 'home' as TabType, icon: 'home-outline', activeIcon: 'home', label: 'Início' },
+    { id: 'diet' as TabType, icon: 'nutrition-outline', activeIcon: 'nutrition', label: 'Dieta' },
+    { id: 'goals' as TabType, icon: 'target-outline', activeIcon: 'target', label: 'Metas' },
+    { id: 'progress' as TabType, icon: 'trending-up-outline', activeIcon: 'trending-up', label: 'Progresso' },
+    { id: 'profile' as TabType, icon: 'person-outline', activeIcon: 'person', label: 'Perfil' },
+  ];
 
   return (
-    <TouchableOpacity 
-      onPress={onPress} 
-      onLongPress={onLongPress} 
-      style={styles.tabButton}
-      activeOpacity={0.7}
-    >
-      <Animated.View
-        style={{
-          transform: [{ scale }],
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        {getTabIcon({ 
-          routeName: route.name, 
-          focused, 
-          color: focused ? '#00FFF7' : '#666', 
-          size: 26 
+    <View style={styles.container}>
+      <View style={styles.tabContainer}>
+        {tabs.map((tab) => {
+          const isActive = activeTab === tab.id;
+          const iconName = isActive ? tab.activeIcon : tab.icon;
+          
+          return (
+            <TouchableOpacity
+              key={tab.id}
+              onPress={() => onTabChange(tab.id)}
+              style={[
+                styles.tabButton,
+                isActive ? styles.activeTabButton : styles.inactiveTabButton
+              ]}
+              activeOpacity={0.7}
+            >
+              <Ionicons
+                name={iconName as any}
+                size={20}
+                color={isActive ? '#A259FF' : '#8E8E93'}
+              />
+              <Text style={[
+                styles.tabLabel,
+                isActive ? styles.activeTabLabel : styles.inactiveTabLabel
+              ]}>
+                {tab.label}
+              </Text>
+            </TouchableOpacity>
+          );
         })}
-        <Animated.Text style={[styles.label, { 
-          opacity,
-          color: focused ? '#00FFF7' : '#666'
-        }]}>
-          {getTabLabel(route.name)}
-        </Animated.Text>
-      </Animated.View>
-    </TouchableOpacity>
+      </View>
+    </View>
   );
-};
-
-const BottomTabBar = ({ state, descriptors, navigation }) => {
-  const insets = useSafeAreaInsets();
-  const translateY = useRef(new Animated.Value(50)).current;
-  const opacity = useRef(new Animated.Value(0)).current;
-
-  useEffect(() => {
-    Animated.parallel([
-      Animated.timing(opacity, { 
-        toValue: 1, 
-        duration: 500, 
-        useNativeDriver: true 
-      }),
-      Animated.spring(translateY, { 
-        toValue: 0, 
-        useNativeDriver: true,
-        tension: 100,
-        friction: 8
-      }),
-    ]).start();
-  }, [opacity, translateY]);
-
-  // Validação para state e routes
-  if (!state || !state.routes || !Array.isArray(state.routes)) {
-    return null;
-  }
-
-  return (
-    <Animated.View
-      style={[styles.container, {
-        paddingBottom: Math.max(insets.bottom, 10),
-        transform: [{ translateY }],
-        opacity,
-      }]}
-    >
-      {state.routes.map((route, index) => {
-        // Validação adicional para cada route
-        if (!route || !route.key || !route.name) {
-          return null;
-        }
-
-        const isFocused = state.index === index;
-
-        const onPress = () => {
-          try {
-            const event = navigation.emit({ 
-              type: 'tabPress', 
-              target: route.key, 
-              canPreventDefault: true 
-            });
-            
-            if (!isFocused && !event.defaultPrevented) {
-              navigation.navigate(route.name);
-            }
-          } catch (error) {
-            console.warn('Erro na navegação:', error);
-          }
-        };
-
-        const onLongPress = () => {
-          try {
-            navigation.emit({ 
-              type: 'tabLongPress', 
-              target: route.key 
-            });
-          } catch (error) {
-            console.warn('Erro no longPress:', error);
-          }
-        };
-
-        return (
-          <AnimatedTab
-            key={route.key}
-            route={route}
-            focused={isFocused}
-            onPress={onPress}
-            onLongPress={onLongPress}
-          />
-        );
-      })}
-    </Animated.View>
-  );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
-    backgroundColor: '#0D0D0D',
-    height: 70,
-    justifyContent: 'space-around',
-    alignItems: 'center',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: 'rgba(26, 26, 46, 0.95)',
     borderTopWidth: 1,
-    borderTopColor: '#111',
-    elevation: 10,
+    borderTopColor: '#2D2D44',
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    // Backdrop blur effect simulation
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: -2,
     },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 10,
+  },
+  tabContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    maxWidth: 400,
+    alignSelf: 'center',
+    width: '100%',
   },
   tabButton: {
-    flex: 1,
+    flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 10,
+    gap: 4,
+    paddingVertical: 8,
+    paddingHorizontal: 8,
+    borderRadius: 8,
+    minWidth: 60,
   },
-  label: {
-    marginTop: 4,
-    fontSize: 10,
-    fontFamily: Platform.OS === 'ios' ? 'Orbitron-Bold' : 'Orbitron-Bold',
-    textAlign: 'center',
+  activeTabButton: {
+    backgroundColor: 'rgba(162, 89, 255, 0.2)',
+  },
+  inactiveTabButton: {
+    backgroundColor: 'transparent',
+  },
+  tabLabel: {
+    fontSize: 12,
+    fontWeight: '500',
+  },
+  activeTabLabel: {
+    color: '#A259FF',
+  },
+  inactiveTabLabel: {
+    color: '#8E8E93',
   },
 });
 
