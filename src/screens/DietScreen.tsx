@@ -1,153 +1,305 @@
 import React, { useState } from 'react';
-import { SafeAreaView, ScrollView, StyleSheet } from 'react-native';
+import {
+  View,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  Text,
+  SafeAreaView,
+  StatusBar,
+} from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
-import HeaderCard from '../components/HeaderCard';
-import MacroProgressCard from '../components/MacroProgressCard';
-import HydrationCard from '../components/HydrationCard';
-import MealsCard from '../components/MealsCard';
-import SupplementsCard from '../components/SupplementsCard';
-import TipCard from '../components/TipCard';
-import SummaryCard from '../components/SummaryCard';
-import Toast from '../components/Toast';
-import FloatingActionButton from '../components/FloatingButton';
-import HomeHeader from '../components/HomeHeader';
+// Importar os componentes (você precisará criar estes)
+import { Header } from '../components/Header';
+import { GoalCard } from '../components/GoalCard';
+import { MealCard, Meal, Food } from '../components/MealCard';
+import { EditGoalsModal } from '../components/EditGoalsModal';
+import { AddFoodModal } from '../components/AddFoodModal';
 
-const DietScreen: React.FC = () => {
-  const [waterIntake, setWaterIntake] = useState(6);
-  const [showToast, setShowToast] = useState(false);
-  const [toastMessage, setToastMessage] = useState('');
+export default function DietScreen() {
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [isEditGoalsOpen, setIsEditGoalsOpen] = useState(false);
+  const [isAddFoodOpen, setIsAddFoodOpen] = useState(false);
+  const [selectedMealId, setSelectedMealId] = useState<string | null>(null);
 
-  const [supplements, setSupplements] = useState([
-    { name: 'Whey Protein', time: '10:00', taken: true },
-    { name: 'Creatina', time: '14:00', taken: true },
-    { name: 'Ômega 3', time: '19:00', taken: false },
-    { name: 'Vitamina D', time: '08:00', taken: false },
+  const [goals, setGoals] = useState({
+    calories: 2300,
+    proteins: 150,
+    carbs: 250,
+    fats: 85,
+    dietType: 'balanced'
+  });
+
+  const [meals, setMeals] = useState<Meal[]>([
+    {
+      id: '1',
+      name: 'Café da manhã',
+      emoji: '☕',
+      time: '07:00',
+      foods: [
+        {
+          id: '1',
+          name: 'Aveia',
+          quantity: 0.5,
+          unit: 'xícara',
+          calories: 195,
+          proteins: 8.5,
+          carbs: 33,
+          fats: 3.5
+        },
+        {
+          id: '2',
+          name: 'Banana',
+          quantity: 1,
+          unit: 'unidade',
+          calories: 89,
+          proteins: 1.1,
+          carbs: 23,
+          fats: 0.3
+        }
+      ]
+    },
+    {
+      id: '2',
+      name: 'Almoço',
+      emoji: '🍛',
+      time: '12:30',
+      foods: [
+        {
+          id: '3',
+          name: 'Peito de frango',
+          quantity: 150,
+          unit: '150g',
+          calories: 248,
+          proteins: 46.5,
+          carbs: 0,
+          fats: 5.4
+        },
+        {
+          id: '4',
+          name: 'Arroz branco',
+          quantity: 1,
+          unit: 'xícara',
+          calories: 130,
+          proteins: 2.7,
+          carbs: 28,
+          fats: 0.3
+        },
+        {
+          id: '5',
+          name: 'Brócolis',
+          quantity: 100,
+          unit: '100g',
+          calories: 34,
+          proteins: 2.8,
+          carbs: 7,
+          fats: 0.4
+        }
+      ]
+    },
+    {
+      id: '3',
+      name: 'Jantar',
+      emoji: '🍲',
+      time: '19:00',
+      foods: []
+    },
+    {
+      id: '4',
+      name: 'Lanches',
+      emoji: '🍎',
+      time: '15:30',
+      foods: []
+    }
   ]);
 
-  const macroProgress = [
-    { name: 'Proteína', current: 95, target: 160, unit: 'g', color: '#00FFF7', percentage: 59 },
-    { name: 'Carboidrato', current: 72, target: 200, unit: 'g', color: '#F59E0B', percentage: 36 },
-    { name: 'Gordura', current: 28, target: 60, unit: 'g', color: '#EF4444', percentage: 47 },
-  ];
+  // Calcular totais consumidos
+  const currentCalories = meals.reduce((total, meal) => 
+    total + meal.foods.reduce((mealTotal, food) => mealTotal + food.calories, 0), 0
+  );
 
-  const meals = [
-    {
-      id: 1,
-      name: 'Café da Manhã',
-      time: '07:30',
-      calories: '420 kcal',
-      status: 'completed',
-      foods: ['Aveia com banana', 'Ovos mexidos', 'Café preto'],
-      macros: { protein: '25g', carbs: '45g', fat: '12g' },
-    },
-    {
-      id: 2,
-      name: 'Lanche da Manhã',
-      time: '10:00',
-      calories: '180 kcal',
-      status: 'completed',
-      foods: ['Whey protein', 'Banana'],
-      macros: { protein: '30g', carbs: '15g', fat: '2g' },
-    },
-    {
-      id: 3,
-      name: 'Almoço',
-      time: '12:30',
-      calories: '650 kcal',
-      status: 'pending',
-      foods: ['Frango grelhado', 'Arroz integral', 'Brócolis', 'Salada'],
-      macros: { protein: '45g', carbs: '60g', fat: '18g' },
-    },
-    {
-      id: 4,
-      name: 'Lanche da Tarde',
-      time: '15:30',
-      calories: '220 kcal',
-      status: 'pending',
-      foods: ['Iogurte grego', 'Castanhas', 'Mel'],
-      macros: { protein: '20g', carbs: '12g', fat: '14g' },
-    },
-    {
-      id: 5,
-      name: 'Jantar',
-      time: '19:00',
-      calories: '520 kcal',
-      status: 'pending',
-      foods: ['Salmão grelhado', 'Batata doce', 'Aspargos'],
-      macros: { protein: '40g', carbs: '35g', fat: '22g' },
-    },
-  ];
+  const currentProteins = meals.reduce((total, meal) => 
+    total + meal.foods.reduce((mealTotal, food) => mealTotal + food.proteins, 0), 0
+  );
 
-  const displayToast = (message: string) => {
-    setToastMessage(message);
-    setShowToast(true);
-    setTimeout(() => setShowToast(false), 3000);
+  const currentCarbs = meals.reduce((total, meal) => 
+    total + meal.foods.reduce((mealTotal, food) => mealTotal + food.carbs, 0), 0
+  );
+
+  const currentFats = meals.reduce((total, meal) => 
+    total + meal.foods.reduce((mealTotal, food) => mealTotal + food.fats, 0), 0
+  );
+
+  const handleAddFood = (mealId: string) => {
+    setSelectedMealId(mealId);
+    setIsAddFoodOpen(true);
   };
 
-  const addWater = () => {
-    setWaterIntake((prev) => Math.min(prev + 1, 8)); // Limita a 8 copos
-    displayToast('💧 Mais um copo de água registrado!');
+  const handleEditMeal = (meal: Meal) => {
+    setSelectedMealId(meal.id);
+    setIsAddFoodOpen(true);
   };
 
-  const toggleSupplement = (name: string) => {
-    setSupplements((prev) =>
-      prev.map((supp) =>
-        supp.name === name ? { ...supp, taken: !supp.taken } : supp
-      )
-    );
-    displayToast(`💊 ${name} marcado/desmarcado!`);
+  const handleAddFoodToMeal = (food: Omit<Food, 'id'>) => {
+    if (selectedMealId) {
+      const newFood: Food = {
+        ...food,
+        id: Date.now().toString()
+      };
+
+      setMeals(meals.map(meal => 
+        meal.id === selectedMealId 
+          ? { ...meal, foods: [...meal.foods, newFood] }
+          : meal
+      ));
+    }
   };
 
-  const toggleMeal = (id: number) => {
-    // Aqui você poderia atualizar o status da refeição (pendente/completada)
-    displayToast(`🍽️ Refeição ${id} marcada/desmarcada!`);
+  const addNewMeal = () => {
+    const newMeal: Meal = {
+      id: Date.now().toString(),
+      name: 'Nova Refeição',
+      emoji: '🍽️',
+      time: '18:00',
+      foods: []
+    };
+    setMeals([...meals, newMeal]);
   };
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <Toast message={toastMessage} visible={showToast} />
-      <HomeHeader
-        username="Deywid Braga"
-      />
-      <ScrollView
-        contentContainerStyle={styles.container}
+    <SafeAreaView style={styles.container}>
+      <StatusBar barStyle="light-content" backgroundColor="#0D0D1F" />
+      
+      <ScrollView 
+        style={styles.scrollView}
+        contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
-        <HeaderCard totalCalories={1990} />
-        <MacroProgressCard macros={macroProgress} />
-        <HydrationCard
-          currentGlasses={waterIntake}
-          goalGlasses={8}
-          onAddWater={addWater}
-        />
-        <MealsCard meals={meals} onToggleMeal={toggleMeal} />
-        <SupplementsCard supplements={supplements} onToggle={toggleSupplement} />
-        <TipCard tip="Consuma proteína em todas as refeições para manter a síntese proteica ativa ao longo do dia e otimizar a recuperação muscular." />
-        <SummaryCard
-          calories={1990}
-          mealsCompleted={meals.filter((m) => m.status === 'completed').length}
-          mealsTotal={meals.length}
-          dailyGoalPercent={75}
-        />
+        <View style={styles.content}>
+          <Header 
+            selectedDate={selectedDate} 
+            onDateChange={setSelectedDate} 
+          />
+          
+          <GoalCard
+            currentCalories={currentCalories}
+            targetCalories={goals.calories}
+            macros={{
+              proteins: { current: Math.round(currentProteins * 10) / 10, target: goals.proteins },
+              carbs: { current: Math.round(currentCarbs * 10) / 10, target: goals.carbs },
+              fats: { current: Math.round(currentFats * 10) / 10, target: goals.fats }
+            }}
+            onEditGoals={() => setIsEditGoalsOpen(true)}
+          />
+
+          <View style={styles.mealsContainer}>
+            {meals.map((meal) => (
+              <MealCard
+                key={meal.id}
+                meal={meal}
+                onAddFood={handleAddFood}
+                onEditMeal={handleEditMeal}
+              />
+            ))}
+          </View>
+
+          <TouchableOpacity
+            onPress={addNewMeal}
+            style={styles.addMealButton}
+            activeOpacity={0.8}
+          >
+            <Ionicons name="add" size={20} color="#000000" style={styles.addIcon} />
+            <Text style={styles.addMealText}>
+              Adicionar nova refeição 🍽️
+            </Text>
+          </TouchableOpacity>
+        </View>
       </ScrollView>
-      <FloatingActionButton
-        icon="📝"
-        onPress={() => displayToast('📝 Botão pressionado!')}
-        accessibilityLabel="Botão para adicionar anotação"
+
+      {/* Modais */}
+      <EditGoalsModal
+        isOpen={isEditGoalsOpen}
+        onClose={() => setIsEditGoalsOpen(false)}
+        currentGoals={goals}
+        onSave={setGoals}
+      />
+
+      <AddFoodModal
+        isOpen={isAddFoodOpen}
+        onClose={() => {
+          setIsAddFoodOpen(false);
+          setSelectedMealId(null);
+        }}
+        onAddFood={handleAddFoodToMeal}
       />
     </SafeAreaView>
   );
-};
+}
 
 const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: '#09090B',
-  },
   container: {
-    padding: 20,
-    paddingBottom: 80,
+    flex: 1,
+    backgroundColor: '#0D0D1F',
+  },
+  scrollView: {
+    flex: 1,
+  },
+  scrollContent: {
+    paddingBottom: 100, // Espaço para o bottom tab bar
+  },
+  content: {
+    paddingHorizontal: 16,
+    paddingTop: 8,
+  },
+  mealsContainer: {
+    gap: 16,
+    marginBottom: 24,
+  },
+  addMealButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#0FF0FC',
+    paddingVertical: 16,
+    paddingHorizontal: 24,
+    borderRadius: 12,
+    marginBottom: 24,
+    shadowColor: '#0FF0FC',
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+    shadowOpacity: 0.4,
+    shadowRadius: 12,
+    elevation: 8,
+  },
+  addIcon: {
+    marginRight: 8,
+  },
+  addMealText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#000000',
   },
 });
 
-export default DietScreen;
+// Tipos que você precisará criar em arquivos separados
+export interface Food {
+  id: string;
+  name: string;
+  quantity: number;
+  unit: string;
+  calories: number;
+  proteins: number;
+  carbs: number;
+  fats: number;
+}
+
+export interface Meal {
+  id: string;
+  name: string;
+  emoji: string;
+  time: string;
+  foods: Food[];
+}
