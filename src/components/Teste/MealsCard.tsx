@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import MealCard from './MealCard';
+import MealCard from '../MealCard';
 
 interface MealsCardProps {
   meals: {
