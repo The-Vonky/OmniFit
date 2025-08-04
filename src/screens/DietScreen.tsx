@@ -11,7 +11,8 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 
 // Importar os componentes
-import { Header } from '../components/HeaderCard';
+import Header from '../components/HeaderCard';
+import HomeHeader from '../components/HomeHeader';
 import { GoalCard } from '../components/GoalCard';
 import { MealCard, Meal, Food } from '../components/MealCard';
 import { EditGoalsModal } from '../components/EditGoalsModal';
@@ -115,19 +116,19 @@ export default function DietScreen() {
   ]);
 
   // Calcular totais consumidos
-  const currentCalories = meals.reduce((total, meal) => 
+  const currentCalories = meals.reduce((total, meal) =>
     total + meal.foods.reduce((mealTotal, food) => mealTotal + food.calories, 0), 0
   );
 
-  const currentProteins = meals.reduce((total, meal) => 
+  const currentProteins = meals.reduce((total, meal) =>
     total + meal.foods.reduce((mealTotal, food) => mealTotal + food.proteins, 0), 0
   );
 
-  const currentCarbs = meals.reduce((total, meal) => 
+  const currentCarbs = meals.reduce((total, meal) =>
     total + meal.foods.reduce((mealTotal, food) => mealTotal + food.carbs, 0), 0
   );
 
-  const currentFats = meals.reduce((total, meal) => 
+  const currentFats = meals.reduce((total, meal) =>
     total + meal.foods.reduce((mealTotal, food) => mealTotal + food.fats, 0), 0
   );
 
@@ -148,8 +149,8 @@ export default function DietScreen() {
         id: Date.now().toString()
       };
 
-      setMeals(meals.map(meal => 
-        meal.id === selectedMealId 
+      setMeals(meals.map(meal =>
+        meal.id === selectedMealId
           ? { ...meal, foods: [...meal.foods, newFood] }
           : meal
       ));
@@ -170,18 +171,24 @@ export default function DietScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor="#0D0D1F" />
+
+      <HomeHeader
+        username="Deywid Braga"
+        onProfilePress={() => console.log('Perfil pressionado!')}
+        onSettingsPress={() => console.log('Configurações pressionadas!')}
+      />
       
-      <ScrollView 
+      <ScrollView
         style={styles.scrollView}
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.content}>
-          <Header 
-            selectedDate={selectedDate} 
-            onDateChange={setSelectedDate} 
+          <Header
+            selectedDate={selectedDate}
+            onDateChange={setSelectedDate}
           />
-          
+
           <GoalCard
             currentCalories={currentCalories}
             targetCalories={goals.calories}
@@ -283,23 +290,3 @@ const styles = StyleSheet.create({
     color: '#000000',
   },
 });
-
-// Tipos que você precisará criar em arquivos separados
-export interface Food {
-  id: string;
-  name: string;
-  quantity: number;
-  unit: string;
-  calories: number;
-  proteins: number;
-  carbs: number;
-  fats: number;
-}
-
-export interface Meal {
-  id: string;
-  name: string;
-  emoji: string;
-  time: string;
-  foods: Food[];
-}

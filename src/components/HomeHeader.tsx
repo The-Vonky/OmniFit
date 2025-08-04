@@ -1,50 +1,17 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import {
   View,
   Text,
   TouchableOpacity,
   StyleSheet,
-  Animated,
   Platform,
 } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import { useNavigation } from '@react-navigation/native';
-import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
-
-type TabParamList = {
-  home: undefined;
-  workout: undefined;
-  diet: undefined;
-  progress: undefined;
-  profile: undefined;
-};
 
 interface HomeHeaderProps {
   username: string;
 }
 
 const HomeHeader: React.FC<HomeHeaderProps> = ({ username }) => {
-  const insets = useSafeAreaInsets();
-  const navigation = useNavigation<BottomTabNavigationProp<TabParamList>>();
-  const fadeAnim = useRef(new Animated.Value(0)).current;
-  const slideAnim = useRef(new Animated.Value(50)).current;
-
-  useEffect(() => {
-    Animated.parallel([
-      Animated.timing(fadeAnim, {
-        toValue: 1,
-        duration: 1000,
-        useNativeDriver: true,
-      }),
-      Animated.timing(slideAnim, {
-        toValue: 0,
-        duration: 800,
-        useNativeDriver: true,
-      }),
-    ]).start();
-  }, []);
-
   // Função para gerar saudação baseada no horário
   const getGreeting = (): string => {
     const currentHour = new Date().getHours();
@@ -78,16 +45,8 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ username }) => {
   };
 
   return (
-    <View style={[styles.container, { paddingTop: insets.top }]}>
-      <Animated.View 
-        style={[
-          styles.header,
-          {
-            opacity: fadeAnim,
-            transform: [{ translateY: slideAnim }],
-          }
-        ]}
-      >
+    <View style={styles.container}>
+      <View style={styles.header}>
         <View style={styles.textContainer}>
           <Text style={styles.greeting}>{getGreeting()}</Text>
           <Text style={styles.subtitle}>{getFormattedDate()}</Text>
@@ -95,12 +54,11 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ username }) => {
         
         <TouchableOpacity 
           style={styles.profileButton}
-          onPress={() => navigation.navigate('home')}
           activeOpacity={0.7}
         >
-          <Ionicons name="person-circle" size={40} color="#00FFF7" />
+          <Text style={styles.profileIcon}>👤</Text>
         </TouchableOpacity>
-      </Animated.View>
+      </View>
     </View>
   );
 };
@@ -108,11 +66,13 @@ const HomeHeader: React.FC<HomeHeaderProps> = ({ username }) => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#0D0D0D',
+    paddingTop: 50, // Substitui o SafeArea temporariamente
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    paddingTop: 0,
     paddingHorizontal: 20,
     paddingVertical: 20,
   },
@@ -123,17 +83,26 @@ const styles = StyleSheet.create({
   greeting: {
     fontSize: 20,
     color: '#FFFFFF',
-    fontFamily: Platform.OS === 'ios' ? 'Orbitron-Bold' : 'Orbitron-Bold',
+    fontWeight: 'bold',
     marginBottom: 4,
     flexShrink: 1,
   },
   subtitle: {
     fontSize: 14,
     color: '#666666',
-    fontFamily: Platform.OS === 'ios' ? 'Orbitron-Regular' : 'Orbitron-Regular',
   },
   profileButton: {
     padding: 5,
+    backgroundColor: '#00FFF7',
+    borderRadius: 20,
+    width: 40,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  profileIcon: {
+    fontSize: 24,
+    color: '#000',
   },
 });
 
