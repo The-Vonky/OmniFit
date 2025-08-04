@@ -10,8 +10,8 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-// Importar os componentes (você precisará criar estes)
-import { Header } from '../components/Header';
+// Importar os componentes
+import { Header } from '../components/HeaderCard';
 import { GoalCard } from '../components/GoalCard';
 import { MealCard, Meal, Food } from '../components/MealCard';
 import { EditGoalsModal } from '../components/EditGoalsModal';
