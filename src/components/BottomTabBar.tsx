@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-export type TabType = 'home' | 'diet' | 'goals' | 'progress' | 'profile';
+export type TabType = 'home' | 'treino' | 'dieta' | 'progresso' | 'outros';
 
 interface BottomTabBarProps {
   activeTab: TabType;
@@ -11,11 +11,11 @@ interface BottomTabBarProps {
 
 export function BottomTabBar({ activeTab, onTabChange }: BottomTabBarProps) {
   const tabs = [
-    { id: 'home' as TabType, icon: 'home-outline', activeIcon: 'home', label: 'Início' },
-    { id: 'diet' as TabType, icon: 'nutrition-outline', activeIcon: 'nutrition', label: 'Dieta' },
-    { id: 'goals' as TabType, icon: 'target-outline', activeIcon: 'target', label: 'Metas' },
-    { id: 'progress' as TabType, icon: 'trending-up-outline', activeIcon: 'trending-up', label: 'Progresso' },
-    { id: 'profile' as TabType, icon: 'person-outline', activeIcon: 'person', label: 'Perfil' },
+    { id: 'home' as TabType, icon: 'home-outline', activeIcon: 'home', label: 'Home' },
+    { id: 'treino' as TabType, icon: 'fitness-outline', activeIcon: 'fitness', label: 'Treino' },
+    { id: 'dieta' as TabType, icon: 'nutrition-outline', activeIcon: 'nutrition', label: 'Dieta' },
+    { id: 'progresso' as TabType, icon: 'trending-up-outline', activeIcon: 'trending-up', label: 'Progresso' },
+    { id: 'outros' as TabType, icon: 'ellipsis-horizontal-outline', activeIcon: 'ellipsis-horizontal', label: 'Outros' },
   ];
 
   return (
