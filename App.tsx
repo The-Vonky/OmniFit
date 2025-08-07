@@ -16,8 +16,9 @@ const PlaceholderScreen = ({ label }: { label: string }) => (
 );
 
 // Componentes separados para evitar funções inline
-const GoalsScreen = () => <PlaceholderScreen label="Goals Screen" />;
+const WorkoutScreen = () => <PlaceholderScreen label="Workout Screen" />;
 const ProgressScreen = () => <PlaceholderScreen label="Progress Screen" />;
+const OthersScreen = () => <PlaceholderScreen label="Others Screen" />;
 
 export default function App() {
   const [fontLoaded, setFontLoaded] = useState(false);
@@ -54,14 +55,14 @@ export default function App() {
     switch (activeTab) {
       case 'home':
         return <HomeScreen />;
+      case 'workout':
+        return <WorkoutScreen />;
       case 'diet':
         return <DietScreen />;
-      case 'goals':
-        return <GoalsScreen />;
       case 'progress':
         return <ProgressScreen />;
-      case 'profile':
-        return <ProfileScreen />;
+      case 'others':
+        return <OthersScreen />;
       default:
         return <HomeScreen />;
     }
