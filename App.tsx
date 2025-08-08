@@ -8,6 +8,7 @@ import { BottomTabBar, TabType } from './src/components/BottomTabBar';
 import HomeScreen from './src/screens/HomeScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
 import DietScreen from './src/screens/DietScreen';
+import WorkoutScreen from './src/screens/WorkoutScreen';
 
 const PlaceholderScreen = ({ label }: { label: string }) => (
   <View style={styles.screen}>
@@ -16,7 +17,6 @@ const PlaceholderScreen = ({ label }: { label: string }) => (
 );
 
 // Componentes separados para evitar funções inline
-const WorkoutScreen = () => <PlaceholderScreen label="Workout Screen" />;
 const ProgressScreen = () => <PlaceholderScreen label="Progress Screen" />;
 const OthersScreen = () => <PlaceholderScreen label="Others Screen" />;
 
