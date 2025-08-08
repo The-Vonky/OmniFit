@@ -11,12 +11,12 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 
 // Importar os componentes
-import Header from '../components/HeaderCard';
+import Header from '../components/Diet/HeaderCard';
 import HomeHeader from '../components/HomeHeader';
-import { GoalCard } from '../components/GoalCard';
-import { MealCard, Meal, Food } from '../components/MealCard';
-import { EditGoalsModal } from '../components/EditGoalsModal';
-import { AddFoodModal } from '../components/AddFoodModal';
+import { GoalCard } from '../components/Diet/GoalCard';
+import { MealCard, Meal, Food } from '../components/Diet/MealCard';
+import { EditGoalsModal } from '../components/Diet/EditGoalsModal';
+import { AddFoodModal } from '../components/Diet/AddFoodModal';
 
 export default function DietScreen() {
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -177,7 +177,7 @@ export default function DietScreen() {
         onProfilePress={() => console.log('Perfil pressionado!')}
         onSettingsPress={() => console.log('Configurações pressionadas!')}
       />
-      
+
       <ScrollView
         style={styles.scrollView}
         contentContainerStyle={styles.scrollContent}
