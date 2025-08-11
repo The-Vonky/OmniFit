@@ -6,7 +6,6 @@ import { View, Text, StyleSheet } from 'react-native';
 
 import { BottomTabBar, TabType } from './src/components/BottomTabBar';
 import HomeScreen from './src/screens/HomeScreen';
-import ProfileScreen from './src/screens/ProfileScreen';
 import DietScreen from './src/screens/DietScreen';
 import WorkoutScreen from './src/screens/WorkoutScreen';
 
