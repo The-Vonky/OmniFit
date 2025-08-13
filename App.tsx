@@ -8,6 +8,7 @@ import { BottomTabBar, TabType } from './src/components/BottomTabBar';
 import HomeScreen from './src/screens/HomeScreen';
 import DietScreen from './src/screens/DietScreen';
 import WorkoutScreen from './src/screens/WorkoutScreen';
+import CyberpunkWorkout from './src/components/Cyberpunk/CyberpunkWorkout';
 
 const PlaceholderScreen = ({ label }: { label: string }) => (
   <View style={styles.screen}>
@@ -59,7 +60,7 @@ export default function App() {
       case 'diet':
         return <DietScreen />;
       case 'progress':
-        return <ProgressScreen />;
+        return <CyberpunkWorkout />;
       case 'others':
         return <OthersScreen />;
       default:
