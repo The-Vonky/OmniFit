@@ -9,6 +9,7 @@ import HomeScreen from './src/screens/HomeScreen';
 import DietScreen from './src/screens/DietScreen';
 import WorkoutScreen from './src/screens/WorkoutScreen';
 import CyberpunkWorkout from './src/components/Cyberpunk/CyberpunkWorkout';
+import ExerciseDetailScreen from './src/screens/ExerciseDetailScreen';
 
 const PlaceholderScreen = ({ label }: { label: string }) => (
   <View style={styles.screen}>
@@ -62,7 +63,7 @@ export default function App() {
       case 'progress':
         return <CyberpunkWorkout />;
       case 'others':
-        return <OthersScreen />;
+        return <ExerciseDetailScreen />;
       default:
         return <HomeScreen />;
     }
