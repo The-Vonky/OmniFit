@@ -12,7 +12,6 @@ import {
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
-import WorkoutSummaryCard from '../components/WorkoutSummaryCard';
 
 const { width } = Dimensions.get('window');
 
@@ -24,7 +23,7 @@ const mockWorkoutData = {
   difficulty: 'intermediário' as const,
   exerciseCount: 8,
   completedExercises: 3,
-  weeklyPlan: ['A', 'B', 'C', 'REST', 'A', 'B', 'REST'],
+  weeklyPlan: ['A', 'B', 'C', 'DESC', 'A', 'B', 'DESC'],
   currentDay: 0,
 };
 
@@ -36,7 +35,7 @@ const mockExercises = [
   { id: 5, name: 'Tríceps Pulley', sets: 4, reps: '12-15', weight: '25kg', completed: false, category: 'TRÍCEPS' },
   { id: 6, name: 'Tríceps Francês', sets: 3, reps: '10-12', weight: '18kg', completed: false, category: 'TRÍCEPS' },
   { id: 7, name: 'Tríceps Coice', sets: 3, reps: '15', weight: '8kg', completed: false, category: 'TRÍCEPS' },
-  { id: 8, name: 'Flexão Diamante', sets: 2, reps: 'MAX', weight: 'Corporal', completed: false, category: 'TRÍCEPS' },
+  { id: 8, name: 'Flexão Diamante', sets: 2, reps: 'MÁX', weight: 'Corporal', completed: false, category: 'TRÍCEPS' },
 ];
 
 const WorkoutScreen: React.FC = () => {
@@ -122,7 +121,52 @@ const WorkoutScreen: React.FC = () => {
     </View>
   );
 
-  // Progress com visual cyberpunk
+  // Card de iniciar treino redesenhado
+  const WorkoutStartCard = () => (
+    <View style={styles.workoutCardContainer}>
+      <TouchableOpacity 
+        style={styles.workoutCard}
+        onPress={handleStartWorkout}
+        activeOpacity={0.9}
+      >
+        <LinearGradient
+          colors={isInProgress 
+            ? ['#10B981', '#059669'] 
+            : ['#8B5CF6', '#EC4899']
+          }
+          style={styles.workoutCardGradient}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+        >
+          <View style={styles.workoutCardContent}>
+            <View style={styles.workoutCardLeft}>
+              <Text style={styles.workoutCardDuration}>{mockWorkoutData.duration} min</Text>
+              <Text style={styles.workoutCardDifficulty}>{mockWorkoutData.difficulty}</Text>
+              <Text style={styles.workoutCardExercises}>{mockWorkoutData.exerciseCount} exercícios</Text>
+            </View>
+            
+            <View style={styles.workoutCardRight}>
+              <Animated.View style={[styles.workoutCardButton, { transform: [{ scale: pulseAnim }] }]}>
+                <Ionicons 
+                  name={isInProgress ? "pause" : "play"} 
+                  size={28} 
+                  color="#FFFFFF" 
+                />
+              </Animated.View>
+            </View>
+          </View>
+          
+          {isInProgress && (
+            <View style={styles.workoutCardProgress}>
+              <Text style={styles.workoutCardProgressText}>Treino em andamento...</Text>
+            </View>
+          )}
+        </LinearGradient>
+      </TouchableOpacity>
+    </View>
+  );
+
+  // Progresso com visual futurista
   const CyberProgress = () => (
     <View style={styles.progressContainer}>
       <LinearGradient
@@ -131,8 +175,8 @@ const WorkoutScreen: React.FC = () => {
       >
         <View style={styles.progressHeader}>
           <View>
-            <Text style={styles.progressTitle}>SYSTEM STATUS</Text>
-            <Text style={styles.progressSubtitle}>Neural Pattern Analysis</Text>
+            <Text style={styles.progressTitle}>STATUS DO SISTEMA</Text>
+            <Text style={styles.progressSubtitle}>Análise de Padrão Neural</Text>
           </View>
           <View style={styles.progressPercentageContainer}>
             <Text style={styles.progressPercentage}>{Math.round(progressPercentage)}</Text>
@@ -168,7 +212,7 @@ const WorkoutScreen: React.FC = () => {
         </View>
         
         <Text style={styles.progressDetails}>
-          {mockWorkoutData.completedExercises} / {mockWorkoutData.exerciseCount} MODULES EXECUTED
+          {mockWorkoutData.completedExercises} / {mockWorkoutData.exerciseCount} MÓDULOS EXECUTADOS
         </Text>
       </LinearGradient>
     </View>
@@ -214,7 +258,7 @@ const WorkoutScreen: React.FC = () => {
                 >
                   <Ionicons name="checkmark" size={20} color="#FFF" />
                 </LinearGradient>
-                <Text style={styles.completedText}>DONE</Text>
+                <Text style={styles.completedText}>FEITO</Text>
               </View>
             ) : (
               <TouchableOpacity style={styles.playContainer}>
@@ -224,13 +268,13 @@ const WorkoutScreen: React.FC = () => {
                 >
                   <Ionicons name="play" size={16} color="#FFF" />
                 </LinearGradient>
-                <Text style={styles.playText}>START</Text>
+                <Text style={styles.playText}>INICIAR</Text>
               </TouchableOpacity>
             )}
           </View>
         </View>
         
-        {/* Efeito de scan line */}
+        {/* Efeito de linha de escaneamento */}
         {!exercise.completed && (
           <Animated.View 
             style={[
@@ -248,7 +292,7 @@ const WorkoutScreen: React.FC = () => {
     </View>
   );
 
-  // Tip futurista
+  // Dica futurista
   const CyberTip = () => (
     <View style={styles.tipContainer}>
       <LinearGradient
@@ -259,16 +303,16 @@ const WorkoutScreen: React.FC = () => {
           <Ionicons name="flash" size={18} color="#F59E0B" />
         </View>
         <View style={styles.tipContent}>
-          <Text style={styles.tipTitle}>NEURAL TIP</Text>
+          <Text style={styles.tipTitle}>DICA NEURAL</Text>
           <Text style={styles.tipText}>
-            Optimize recovery protocol with post-workout stretching sequence
+            Otimize o protocolo de recuperação com sequência de alongamento pós-treino
           </Text>
         </View>
       </LinearGradient>
     </View>
   );
 
-  // Action panel lateral
+  // Painel de ações lateral
   const ActionPanel = () => (
     <View style={styles.actionPanel}>
       <TouchableOpacity style={styles.actionButton}>
@@ -314,58 +358,15 @@ const WorkoutScreen: React.FC = () => {
       >
         <FuturisticHeader />
         
-  // Card de iniciar treino redesenhado
-  const WorkoutStartCard = () => (
-    <View style={styles.workoutCardContainer}>
-      <TouchableOpacity 
-        style={styles.workoutCard}
-        onPress={handleStartWorkout}
-        activeOpacity={0.9}
-      >
-        <LinearGradient
-          colors={isInProgress 
-            ? ['#10B981', '#059669'] 
-            : ['#8B5CF6', '#EC4899']
-          }
-          style={styles.workoutCardGradient}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
-        >
-          <View style={styles.workoutCardContent}>
-            <View style={styles.workoutCardLeft}>
-              <Text style={styles.workoutCardDuration}>{mockWorkoutData.duration} min</Text>
-              <Text style={styles.workoutCardDifficulty}>{mockWorkoutData.difficulty}</Text>
-              <Text style={styles.workoutCardExercises}>{mockWorkoutData.exerciseCount} exercícios</Text>
-            </View>
-            
-            <View style={styles.workoutCardRight}>
-              <View style={styles.workoutCardButton}>
-                <Ionicons 
-                  name={isInProgress ? "pause" : "play"} 
-                  size={28} 
-                  color="#FFFFFF" 
-                />
-              </View>
-            </View>
-          </View>
-          
-          {isInProgress && (
-            <View style={styles.workoutCardProgress}>
-              <Text style={styles.workoutCardProgressText}>Treino em andamento...</Text>
-            </View>
-          )}
-        </LinearGradient>
-      </TouchableOpacity>
-    </View>
-  );
-
+        <WorkoutStartCard />
+        
         <CyberProgress />
 
         <CyberTip />
 
         {/* Lista de exercícios */}
         <View style={styles.exerciseList}>
-          <Text style={styles.sectionTitle}>TRAINING MODULES</Text>
+          <Text style={styles.sectionTitle}>MÓDULOS DE TREINAMENTO</Text>
           <View style={styles.sectionUnderline} />
           {mockExercises.map((exercise, index) => (
             <CyberExerciseCard key={exercise.id} exercise={exercise} index={index} />
@@ -532,7 +533,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 
-  // Progress cyberpunk
+  // Progresso futurista
   progressContainer: {
     marginHorizontal: 20,
     marginVertical: 16,
@@ -619,7 +620,7 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
   },
 
-  // Exercise cards futuristas
+  // Cards de exercício futuristas
   exerciseList: {
     paddingHorizontal: 20,
     marginTop: 24,
@@ -738,7 +739,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#00FFF7',
   },
 
-  // Tip futurista
+  // Dica futurista
   tipContainer: {
     paddingHorizontal: 20,
     marginVertical: 12,
@@ -769,6 +770,29 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '500',
     lineHeight: 18,
+  },
+
+  // Painel de ações - novos estilos adicionados
+  actionPanel: {
+    position: 'absolute',
+    right: 20,
+    top: '50%',
+    transform: [{ translateY: -60 }],
+    zIndex: 1000,
+  },
+  actionButton: {
+    marginVertical: 8,
+    borderRadius: 20,
+    overflow: 'hidden',
+  },
+  actionButtonGradient: {
+    width: 40,
+    height: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.1)',
   },
 });
 
