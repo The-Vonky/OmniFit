@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, Animated } from 'react-native';
-import CyberExerciseCard from './CyberExerciseCard';
+import CyberExerciseCard from '../Workout/CyberExerciseCard';
 
 interface Exercise {
   id: number;
