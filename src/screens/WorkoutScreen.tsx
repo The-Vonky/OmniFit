@@ -21,10 +21,10 @@ import ActionPanel from '../components/Workout/ActionPanel';
 // Dados mockados para teste
 const mockWorkoutData = {
   userName: 'Deywid',
-  workoutName: 'TREINO A – PEITO & TRÍCEPS',
-  duration: 45,
-  difficulty: 'intermediário' as const,
-  exerciseCount: 8,
+  workoutName: 'Peito + Ombro + Tríceps',
+  duration: 69,
+  difficulty: 'Pesado' as const,
+  exerciseCount: 7,
   completedExercises: 3,
   weeklyPlan: ['A', 'B', 'C', 'DESC', 'A', 'B', 'DESC'],
   currentDay: 0,
@@ -33,12 +33,11 @@ const mockWorkoutData = {
 const mockExercises = [
   { id: 1, name: 'Supino Reto Barra', sets: 4, reps: '10-12', weight: '60kg', completed: true, category: 'PEITO' },
   { id: 2, name: 'Supino Inclinado Halteres', sets: 3, reps: '12-15', weight: '24kg', completed: true, category: 'PEITO' },
-  { id: 3, name: 'Crucifixo no Cabo', sets: 3, reps: '15', weight: '20kg', completed: true, category: 'PEITO' },
-  { id: 4, name: 'Mergulho Paralelo', sets: 3, reps: '8-12', weight: 'Corporal', completed: false, category: 'PEITO' },
-  { id: 5, name: 'Tríceps Pulley', sets: 4, reps: '12-15', weight: '25kg', completed: false, category: 'TRÍCEPS' },
-  { id: 6, name: 'Tríceps Francês', sets: 3, reps: '10-12', weight: '18kg', completed: false, category: 'TRÍCEPS' },
-  { id: 7, name: 'Tríceps Coice', sets: 3, reps: '15', weight: '8kg', completed: false, category: 'TRÍCEPS' },
-  { id: 8, name: 'Flexão Diamante', sets: 2, reps: 'MÁX', weight: 'Corporal', completed: false, category: 'TRÍCEPS' },
+  { id: 3, name: 'Crucifixo no Voador', sets: 3, reps: '15', weight: '20kg', completed: true, category: 'PEITO' },
+  { id: 4, name: 'Desenvolvimento Militar Halteres', sets: 3, reps: '8-12', weight: 'Corporal', completed: false, category: 'PEITO' },
+  { id: 5, name: 'Elevação Lateral', sets: 4, reps: '12-15', weight: '25kg', completed: false, category: 'TRÍCEPS' },
+  { id: 6, name: 'Tríceps Testa Barra/Halt.', sets: 3, reps: '10-12', weight: '18kg', completed: false, category: 'TRÍCEPS' },
+  { id: 7, name: 'Tríceps Corda Cross', sets: 3, reps: '15', weight: '8kg', completed: false, category: 'TRÍCEPS' },
 ];
 
 const WorkoutScreen: React.FC = () => {
